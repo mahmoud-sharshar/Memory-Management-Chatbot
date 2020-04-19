@@ -163,7 +163,6 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
                             edge->SetChildNode((*childNode).get());
                             edge->SetParentNode((*parentNode).get());
-                            _edges.push_back(edge.get());
 
                             // find all keywords for current node
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
@@ -219,9 +218,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
   	ChatBot newChatBot("../images/chatbot.png");
     newChatBot.SetChatLogicHandle(this);
     newChatBot.SetRootNode(rootNode);
-  	_chatBot = newChatBot;
     rootNode->MoveChatbotHere(std::move(newChatBot));
-//     _chatBot.SetCurrentNode(rootNode);
     ////
     //// EOF STUDENT CODE
 }
@@ -231,7 +228,7 @@ void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
     _panelDialog = panelDialog;
 }
 
-void ChatLogic::SetChatbotHandle(ChatBot chatbot)
+void ChatLogic::SetChatbotHandle(ChatBot *chatbot)
 {
     _chatBot = chatbot;
 }
@@ -239,7 +236,7 @@ void ChatLogic::SetChatbotHandle(ChatBot chatbot)
 void ChatLogic::SendMessageToChatbot(std::string message)
 {
 
-    _chatBot.ReceiveMessageFromUser(message);
+    _chatBot->ReceiveMessageFromUser(message);
 }
 
 void ChatLogic::SendMessageToUser(std::string message)
@@ -249,5 +246,5 @@ void ChatLogic::SendMessageToUser(std::string message)
 
 wxBitmap *ChatLogic::GetImageFromChatbot()
 {
-    return _chatBot.GetImageHandle();
+    return _chatBot->GetImageHandle();
 }
